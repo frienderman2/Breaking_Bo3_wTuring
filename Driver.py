@@ -3,7 +3,10 @@
 # TODO: iterate all 'th' plaintext replacement bigrammes
 # TODO: Implement either a dicitonary search or NLP to shave down on the saved responses (Sidenote - NOT doing NLP, wayyyyyy too much work, and quite divergent from the original intent of this program)
 # TODO: if that all fails, try checking ALL bigrammes in the cypher text as th and see what happens
+# TODO: multiprocess so that I can just brute force the damn thing if all of my half-baked math falls through (which would not suprise me)
 # TODO: if all of that still fails, then this is not a typical bigramme cypher OR exlude p from the alphabet (as p apparently NEVER appears)
+# Also the basic assumption (and possible flaw) is that I am dealing with a single shift bigramme cypher, if it is even a rotating shift, or something more complex, then this whole process is useless
+# TODO: if all the single shift operations fail, try something akin to Turing's solving of the Vingette in 'The Application of Probability to Cryptogrophy' ... keyword try b/c I can only understang 1/2 of the math presented
 
 import Simple_Shift
 from Simple_Shift import *
@@ -22,6 +25,7 @@ def setLists(cyphtxt):
     return [firstLetterList, secondLetterList]
 
 
+# unused function to gather basic info on the letter/bigramme stats
 def getFrequencies():
     cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut vt kn vc gx aw ij av qn lg ef fj uq bd kn sv ' \
               'cx fn je vr rk kn cg aw xq vn zf li fh vz wt ta ia ij zf eh uf tj qm yg hl yq cx ij vw ig de qz tg nj rs er vk tm sa ' \
@@ -104,18 +108,39 @@ if __name__ == '__main__':
     firstList = charLists[0]
     secondList = charLists[1]
 
+    # brute force every possible swap
+    poss1 = poss1 + firstList
+    poss2 = poss2 + secondList
+
+    bigrammeAsString = ''.join(bigrams)
+    bigrammeFormatted = ' '.join(bigrammeAsString[i:i + 2] for i in range(0, len(bigrammeAsString), 2))
+    bigrammeList = setLists(bigrammeFormatted)
+    tList = bigrammeList[0]
+    hList = bigrammeList[1]
+
     # do all the movement and get back two sets of character lists to be sequentially merged
-    characterSet1 = doDiffs(poss1, theTVar, firstList)
-    characterSet2 = doDiffs(poss2, theHVar, secondList)
+    characterSet1 = []
+    characterSet2 = []
+    # this is a rough brute force at this point, but I'm starting to think it might not be a single shift bigramme
+    for i in range(len(tList)):
+        theTVar = tList[i]
+        theHVar = hList[i]
+        tempSet1 = doDiffs(poss1, theTVar, firstList)
+        tempSet2 = doDiffs(poss2, theHVar, secondList)
+        characterSet1.extend(tempSet1)
+        characterSet2.extend(tempSet2)
+
+    print(len(characterSet1))
 
     # sequentially merge and output results
     for i in range(len(characterSet1)):
         outputs = mergeCharLists(characterSet1[i], characterSet2[i])
-        print(f"-------------------Output Attempt #{i + 1}-------------------")
         cleanStr = ''.join(outputs)
-        biStr = ' '.join(cleanStr[i:i + 2] for i in range(0, len(cleanStr), 2))
-        print(biStr)
-        print('\n')
+        if 'the' in cleanStr:
+            print(f"-------------------Output Attempt #{i + 1}-------------------")
+            biStr = ' '.join(cleanStr[i:i + 2] for i in range(0, len(cleanStr), 2))
+            print(biStr)
+            print('\n')
 
 
 
