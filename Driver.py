@@ -1,9 +1,9 @@
 # Callaghan Donnelly
 # the file with the overall main function and setup functions
-# TODO: iterate all th plaintext replacement bigrammes
-# TODO: Implement either a dicitonary search of NLP to shave down on the saved responses
+# TODO: iterate all 'th' plaintext replacement bigrammes
+# TODO: Implement either a dicitonary search or NLP to shave down on the saved responses (Sidenote - NOT doing NLP, wayyyyyy too much work, and quite divergent from the original intent of this program)
 # TODO: if that all fails, try checking ALL bigrammes in the cypher text as th and see what happens
-# TODO: if all of that still fails, then this is not a typical bigramme cypher OR exlude p from the alphabet
+# TODO: if all of that still fails, then this is not a typical bigramme cypher OR exlude p from the alphabet (as p apparently NEVER appears)
 
 import Simple_Shift
 from Simple_Shift import *
