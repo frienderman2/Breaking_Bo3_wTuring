@@ -11,6 +11,7 @@
 import Simple_Shift
 from Simple_Shift import *
 
+
 # setup the cypher text into lists for manipulation
 def setLists(cyphtxt):
     cyphList = cyphtxt.split()
@@ -98,10 +99,9 @@ if __name__ == '__main__':
     # all the possible bigrammes in the cypher text that could be 'th'
     possibleTH = ['kt', 'ut', 'kn', 'ij', 'cx', 'yg', 'ky', 'fh', 'er', 'ho']
     # first letter list
-    poss1 = ['k', 'u', 'k', 'i', 'c', 'y', 'k', 'f', 'e', 'h']
+    poss1 = ['k', 'u', 'k', 'i', 'c', 'y', 'k', 'f', 'e', 'h', 'o']
     # second letter list
-    poss2 = ['t', 't', 'n', 'j', 'x', 'g', 'y', 'h', 'r', 'o']
-
+    poss2 = ['t', 't', 'n', 'j', 'x', 'g', 'y', 'h', 'r', 'o', 'o']
 
     # get the two separated sets of letters (the first of each bigramme in one and the second in the other)
     charLists = setLists(cyphtxt)
@@ -138,9 +138,6 @@ if __name__ == '__main__':
         cleanStr = ''.join(outputs)
         if 'the' in cleanStr:
             print(f"-------------------Output Attempt #{i + 1}-------------------")
-            biStr = ' '.join(cleanStr[i:i + 2] for i in range(0, len(cleanStr), 2))
-            print(biStr)
+            # biStr = ' '.join(cleanStr[i:i + 2] for i in range(0, len(cleanStr), 2))
+            print(cleanStr)
             print('\n')
-
-
-
