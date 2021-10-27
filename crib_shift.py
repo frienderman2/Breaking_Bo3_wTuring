@@ -47,7 +47,6 @@ def findPartialKeys():
     cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut vt kn vc gx aw ij av qn lg ef fj uq bd kn sv'
     testCyph = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
     newtxt = testCyph.replace(" ", "")
-    print(newtxt)
 
     # for every set of 3, compare to 't', 'h', and 'e'
     firstLet = 't'
@@ -69,10 +68,25 @@ def findPartialKeys():
 
 
 # search a regular english dictionary for whole words that contain the pieces I gathered earlier
-def searchDictionary():
-    pass
+def searchDictionary(keyPartList):
+    with open('dictionary.txt', mode='r') as wordDict:
+        holdList = [line.split(',') for line in wordDict.readlines()]
+
+    wordList = []
+    for lists in holdList:
+        wordList.extend(lists)
+
+    fullKeyList = []
+    for word in wordList:
+        for key in keyPartList:
+            if key in word:
+                fullKeyList.append(word)
+
+    return fullKeyList
 
 
 if __name__ == '__main__':
     listOfKeyParts = findPartialKeys()
-    print(listOfKeyParts)
+    fullKeys = searchDictionary(listOfKeyParts)
+    print(fullKeys)
+
