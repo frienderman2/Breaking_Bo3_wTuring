@@ -4,3 +4,6 @@
 
 def makeGadget():
     print("Boo")
+
+def calcFreqs():
+    pass
