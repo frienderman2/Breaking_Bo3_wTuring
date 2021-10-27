@@ -1,6 +1,6 @@
 # Callaghan Donnelly
 # 10/26/2021
-# abandoning the complex math and using modern compute power and a good old fashioned dictionary to find possible cribs/encyphering words
+# abandoning the complex math and using modern compute power and a good old fashioned dictionary to find possible keys/key fragments
 
 cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut vt kn vc gx aw ij av qn lg ef fj uq bd kn sv ' \
           'cx fn je vr rk kn cg aw xq vn zf li fh vz wt ta ia ij zf eh uf tj qm yg hl yq cx ij vw ig de qz tg nj rs er vk tm sa ' \
@@ -11,11 +11,11 @@ cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut 
 
 
 # basic idea:
-# STEP 1: grab just the first line of text
-# STEP 2: Assume each possible set of 3 chars can be shifted to make 'the'
-# STEP 3: let the amount each letter was moved represent a letter of the encryption word
+# STEP 1: grab just the first line of text (Done)
+# STEP 2: Assume each possible set of 3 chars can be shifted to make 'the' (Done)
+# STEP 3: let the amount each letter was moved represent a letter of the encryption word (Done)
 # STEP 4: search whatever dictionary I have for those three letters in that order in each word, and any words that have that get saved as possible encyphering words
-# TODO: get a dictionary (preferably oxford)
+# TODO: get a dictionary (preferably oxford american)
 # STEP 5: try the possible enchiphering words and hopefully I will find some partial words here and there throughout the text
 # STEP 6: if that fails or I just don't see any visibly, use that fancy math they used to see if they were getting closer to the right rotors in enigma
 
@@ -24,11 +24,13 @@ def findMove(cypherChar, plainChar):
     cyphInt = ord(cypherChar) - 97
     plainInt = ord(plainChar) - 97
 
+    # return an int that will be used in the setChar function as an index in the list
     charIndex = cyphInt - plainInt
 
     return charIndex
 
 
+# use my own alphabet list (because it is circular and I can avoid doing math this way) to find which letter is needed for potential partial key
 def setChar(index):
     alphabetList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     try:
@@ -40,18 +42,19 @@ def setChar(index):
         return 'a'
 
 
-def doShift():
+# find the partial keys based off of pure guesswork
+def findPartialKeys():
     cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut vt kn vc gx aw ij av qn lg ef fj uq bd kn sv'
     testCyph = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
     newtxt = testCyph.replace(" ", "")
     print(newtxt)
 
-    # for every set of 3
+    # for every set of 3, compare to 't', 'h', and 'e'
     firstLet = 't'
     secondLet = 'h'
     thirdLet = 'e'
+    partialList = []
     for i in range(len(newtxt) - 2):
-        print(i)
         move1 = findMove(newtxt[i], firstLet)
         char1 = setChar(move1)
         move2 = findMove(newtxt[i+1], secondLet)
@@ -59,9 +62,17 @@ def doShift():
         move3 = findMove(newtxt[i+2], thirdLet)
         char3 = setChar(move3)
 
-        partialCrib = char1 + char2 + char3
-        print(partialCrib)
+        partialKey = char1 + char2 + char3
+        partialList.append(partialKey)
+
+    return partialList
+
+
+# search a regular english dictionary for whole words that contain the pieces I gathered earlier
+def searchDictionary():
+    pass
 
 
 if __name__ == '__main__':
-    doShift()
+    listOfKeyParts = findPartialKeys()
+    print(listOfKeyParts)
