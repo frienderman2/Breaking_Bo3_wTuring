@@ -1,9 +1,5 @@
 # Callaghan Donnelly
 # the file with the overall main function and setup functions
-# TODO: iterate all 'th' plaintext replacement bigrammes
-# TODO: Implement either a dicitonary search or NLP to shave down on the saved responses (Sidenote - NOT doing NLP, wayyyyyy too much work, and quite divergent from the original intent of this program)
-# TODO: if that all fails, try checking ALL bigrammes in the cypher text as th and see what happens
-# TODO: multiprocess so that I can just brute force the damn thing if all of my half-baked math falls through (which would not suprise me)
 # TODO: if all of that still fails, then this is not a typical bigramme cypher OR exlude p from the alphabet (as p apparently NEVER appears)
 # Also the basic assumption (and possible flaw) is that I am dealing with a single shift bigramme cypher, if it is even a rotating shift, or something more complex, then this whole process is useless
 # TODO: if all the single shift operations fail, try something akin to Turing's solving of the Vingette in 'The Application of Probability to Cryptogrophy' ... keyword try b/c I can only understang 1/2 of the math presented
