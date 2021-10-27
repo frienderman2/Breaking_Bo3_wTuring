@@ -1,9 +1,13 @@
 # Callaghan Donnelly
-# 11/22/2021
-# breaking a Vingette cypher via the method laid out in Turing's "The Application of Probability to Cryptography"
+# 10/22/2021
+# breaking a Vingette cypher via a modified version of the method laid out in Turing's "The Application of Probability to Cryptography"
 
 def makeGadget():
-    print("Boo")
+    pass
 
 def calcFreqs():
+    pass
+
+
+if __name__ == '__main__':
     pass
