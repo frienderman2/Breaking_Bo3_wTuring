@@ -27,26 +27,29 @@ def findMove(cypherChar, plainChar):
     # return an int that will be used in the setChar function as an index in the list
     charIndex = cyphInt - plainInt
 
+    if charIndex < -25:
+        print(cypherChar)
+        print(plainChar)
+
     return charIndex
 
 
 # use my own alphabet list (because it is circular and I can avoid doing math this way) to find which letter is needed for potential partial key
 def setChar(index):
-    alphabetList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    alphabetList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+                    'u', 'v', 'w', 'x', 'y', 'z']
     try:
         return alphabetList[index]
     except IndexError as e:
         print(f"Tried to access index {index}... not sure why. Weird.")
         # FIXME
-        # it only happens once in tests, so hopefully not an issue? this is gonna be the first place I come back to when things don't work
         return 'a'
 
 
 # find the partial keys based off of pure guesswork
-def findPartialKeys():
-    cyphtxt = 'bx re yh zy bf lm kt ut yg se tb sx ky co jh km aq ve tx vx cy ji ut vt kn vc gx aw ij av qn lg ef fj uq bd kn sv'
+def findPartialKeys(cyphtxt):
     testCyph = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
-    newtxt = testCyph.replace(" ", "")
+    newtxt = cyphtxt.replace(" ", "")
 
     # for every set of 3, compare to 't', 'h', and 'e'
     firstLet = 't'
@@ -56,9 +59,9 @@ def findPartialKeys():
     for i in range(len(newtxt) - 2):
         move1 = findMove(newtxt[i], firstLet)
         char1 = setChar(move1)
-        move2 = findMove(newtxt[i+1], secondLet)
+        move2 = findMove(newtxt[i + 1], secondLet)
         char2 = setChar(move2)
-        move3 = findMove(newtxt[i+2], thirdLet)
+        move3 = findMove(newtxt[i + 2], thirdLet)
         char3 = setChar(move3)
 
         partialKey = char1 + char2 + char3
@@ -85,8 +88,57 @@ def searchDictionary(keyPartList):
     return fullKeyList
 
 
-if __name__ == '__main__':
-    listOfKeyParts = findPartialKeys()
-    fullKeys = searchDictionary(listOfKeyParts)
-    print(fullKeys)
+# remove whitespace, newline chars, and duplicate keys
+def countAndClean(keyList):
+    countDict = {}
+    for key in keyList:
+        fixed = key.strip()
+        counted = fixed.strip('\n')
 
+        try:
+            countDict[counted] += 1
+
+        except KeyError as e:
+            countDict[counted] = 1
+
+    # use unpacking to get the duplicate-free, and cleaned up strings, list of keys
+    noRepeatKeys = [*countDict]
+    return noRepeatKeys
+
+
+# first version of doing clean in-line shifts
+def overlayKeys(cypherText, keyList):
+    # cyph - key
+    finList = []
+    for key in keyList:
+        subStr = []
+        counter = 0
+        while counter < len(cypherText):
+            for letter in key:
+                try:
+                    holdInt = findMove(cypherText[counter], letter)
+                    tempChar = setChar(holdInt)
+                    subStr.append(tempChar)
+                except IndexError:
+                    pass
+                counter = counter + 1
+
+        holdStr = ''.join(subStr)
+        finList.append(holdStr)
+
+    return finList
+
+
+if __name__ == '__main__':
+    # startTxt = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
+    startTxt = 'Fvbz ug moq hxzf qrwtsk'
+    twoTxt = startTxt.replace(' ', '')
+    cyphtxt = twoTxt.lower()
+    print(cyphtxt)
+    listOfKeyParts = findPartialKeys(cyphtxt)
+    fullKeys = searchDictionary(listOfKeyParts)
+    finalKeys = countAndClean(fullKeys)
+    solutions = overlayKeys(cyphtxt, finalKeys)
+    print(finalKeys)
+    for sol in solutions:
+        print(sol)
