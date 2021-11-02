@@ -48,7 +48,7 @@ def setChar(index):
 
 # find the partial keys based off of pure guesswork
 def findPartialKeys(cyphtxt):
-    testCyph = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
+    # testCyph = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
     newtxt = cyphtxt.replace(" ", "")
 
     # for every set of 3, compare to 't', 'h', and 'e'
@@ -129,13 +129,23 @@ def overlayKeys(cypherText, keyList):
     return finList
 
 
+# second version of key shifting
+# shift each possible letter within length of the key (so if the lineup was halfway through the key then it still comes out)
+def doKeyShift(cypherText, keyList):
+    for key in keyList:
+        keyLen = len(key)
+
+
+
 if __name__ == '__main__':
     # startTxt = 'ocfyeuq w avtv fvxzi jovxtekuql yirov rvy zz hbti ja cny wtusgamjfg vhr dmyx bwv at moid rck P oeak moi nqgmlve'
-    startTxt = 'Fvbz ug moq hxzf qrwtsk'
+    startTxt = 'Tskl ug moq hxzf'
     twoTxt = startTxt.replace(' ', '')
     cyphtxt = twoTxt.lower()
     print(cyphtxt)
     listOfKeyParts = findPartialKeys(cyphtxt)
+    # Fixme the output here should be in the 7th item, but instead all of the letters in the partial key are off by 7??
+    print(listOfKeyParts)
     fullKeys = searchDictionary(listOfKeyParts)
     finalKeys = countAndClean(fullKeys)
     solutions = overlayKeys(cyphtxt, finalKeys)
